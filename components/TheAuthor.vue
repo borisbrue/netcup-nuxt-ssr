@@ -3,6 +3,7 @@
     <div class="author flex flex-col justify-center items-center md:flex-row ">
     <img :src="author.avatar" class="author__avatar w-36 h-36 rounded-lg overflow-hidden shadow-md" :alt="`Image of ${username}`">
     <div class="author__info text-center md:text-left">
+      ---
       <div>{{ name }}</div>
       <div>Github User: {{author.name}}</div>
       <div>Profil Url: <a :href="author.profileUrl" rel="nofollow">{{author.profileUrl}}</a></div>
