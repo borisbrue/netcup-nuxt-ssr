@@ -5,3 +5,8 @@
     </div>
   </div>
 </template>
+<style lang="postcss">
+html, body {
+  @apply bg-background;
+}
+</style>
