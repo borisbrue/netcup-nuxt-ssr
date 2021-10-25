@@ -10,7 +10,7 @@
     "test": "jest",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore --ignore-pattern 'docs/*' .",
     "lint": "yarn lint:js",
-    "foo": "node check.js"
+    "rebuild": "node build.js"
   },
   "dependencies": {
     "@nuxt/content": "^1.14.0",
