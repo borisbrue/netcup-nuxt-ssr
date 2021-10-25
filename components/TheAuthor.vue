@@ -27,7 +27,6 @@ export default {
       default: 'Firstname Lastname',
     },
   },
-  computed: {},
   data() {
     return {
       author: {},
@@ -43,11 +42,12 @@ export default {
       },
     }
   },
+  computed: {},
   created() {
     const that = this
     const provider = this.providers[this.provider]
     this.$axios.$get(provider.url).then((data) => {
-      Object.entries(provider.props).map(prop => {
+      Object.entries(provider.props).forEach(prop => {
         const [key,val] = prop
         that.$set(this.author,key,data[val])
       })
