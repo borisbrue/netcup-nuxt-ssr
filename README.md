@@ -1,69 +1,42 @@
-# nuxt-ssr
+# nuxt als running ssr app auf netcup webhosting
 
-## Build Setup
+
+## Intro
+
+Ich mag netcup als Unternehmen. netcup ist seit mehreren Jahren ein verlässlicher Partner für alle möglichen Kundenprojekte. Allerdings finde ich es mittlerweile etwas altbacken, wie mit altueller und neuer Technologie umgegangen wird. Durch den Einsatz von Plesk ist die Konfiguration von z.B. Python-Anwendungen auf Basis von Django, Flask oder Ähnlichem aufgrund einer fehlenden Virtualisierungsmöglichkeit via venv und Co. ist es quasi garnicht möglich eine solche App sinnvoll und updatefähig zu betreiben.
+
+Bei node.js Anwendungen sieht es zum Glück etwas anders aus. Auch wenn im Webhosting (*und ja mir ist bewusst, dass ich mit einem server alles machen kann. Will ich aber nicht. Ich möchte mich nicht um Updates von Datenbanken, Apache, Nginx und Co. kümmern.*) per SSH kein npm zur Verfügung steht und die neuste Version von node 14.xx ist, gibt es eine einfache Möglichkeit node-Anwendungen auf dem Webhosting laufen zu lassen. 
+Ich mache das jetzt mal am Beispiel von nuxt.
+
+### Nuxtprojekt anlegen und zu github übertragen
 
 ```bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
+npx create-nuxt-app nuxt-ssr
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+Du findest das Repo hier: <https://github.com/borisbrue/netcup-nuxt-ssr>
 
-## Special Directories
+Als nächstes erzeugen wir noch eine app.js (Name ist wumpe. Wird von Plesk so vorgeschlagen und ich bin faul)
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+```js{1,3-5}[app.js]
+const nuxt = require('@nuxt/cli')
+nuxt.run(['start'])
+```
 
-### `assets`
+Die Datei ist notwendig, da Plesk eine Startdatei braucht. Wir holen uns dort das CLI für Nuxt und starten die Anwendung im Server-Modus. Gleiches erzielst du auch, wenn du `yarn start` im Terminal nutzt. Plesk müssen wir den Befehl aber anders beibringen. Zusätzlich legen wir eine `.npmrc` Datei an. Die brauchen wir, damit wir bei der Installation keine Fehlermeldungen bekommen.
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+```makefile [.npmrc]
+scripts-prepend-node-path=true
+```
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+Zum Schluss müssen wir noch den Port auf den Defaultport von Plesk (80) setzen. Dazu nutze ich die Nuxt Config.
 
-### `components`
+```js{1,3-5}[nuxt.config.js]
+...
+server: {
+    port: process.env.NODE_ENV !== 'production'? '3000': '80',
+  },
+...
+```
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
-
-### `layouts`
-
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
-
-
-### `pages`
-
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
-
-### `plugins`
-
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
-
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+Wir können jetzt das Repository beim Versionsverwalter unseres Vertrauens hochladen. Ich nutze dafür github. Das funktioniert recht schmerzfrei mit netcup.
