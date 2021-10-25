@@ -54,5 +54,11 @@ article >>> .nuxt-content-highlight pre{
 article >>> .nuxt-content-highlight .filename {
   @apply m-2 font-mono;
 }
+article >>> a {
+  @apply font-mono font-bold text-green-400 hover:text-green-500;
+}
+article >>> p code {
+  @apply text-yellow-500 px-2 text-sm;
+}
 
 </style>

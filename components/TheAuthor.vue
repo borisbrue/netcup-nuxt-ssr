@@ -5,7 +5,7 @@
     <div class="author__info text-center md:text-left">
       <div>{{ name }}</div>
       <div>Github User: {{author.name}}</div>
-      <div>Profil Url: <a :href="author.profileUrl" class="font-mono font-bold" rel="nofollow">{{author.profileUrl}}</a></div>
+      <div>Profil Url: <a :href="author.profileUrl" rel="nofollow">{{author.profileUrl}}</a></div>
     </div>
   </div>
   </section>
